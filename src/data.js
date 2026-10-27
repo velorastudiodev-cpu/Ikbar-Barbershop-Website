@@ -1,7 +1,7 @@
 // Site content: built-in fallbacks plus the CMS (Supabase) loader.
 // The CMS contract is unchanged from the previous site so the dashboard keeps working:
 //   gallery_items(src, type, alt, title, description, category, sort_order)
-//   services(name, desc, price, category: 'utama' | 'tambahan', highlight, sort_order)
+//   services(name, description, price, category: 'utama' | 'tambahan', highlight, sort_order)
 //   site_content(section in lokasi | kontak | barber | about | video, content jsonb)
 import { toDinasti } from './lib/brand.js'
 
@@ -93,7 +93,7 @@ export async function loadSiteData(supabase) {
     supabase.from('site_content').select('section, content').in('section', ['lokasi', 'kontak', 'barber', 'about', 'video']),
   ])
   const sections = Object.fromEntries((content.data || []).map(row => [row.section, row.content || {}]))
-  const svc = (services.data || []).map(s => ({ ...s, name: toDinasti(s.name), desc: toDinasti(s.desc), price: toDinasti(s.price) }))
+  const svc = (services.data || []).map(s => ({ ...s, name: toDinasti(s.name), desc: toDinasti(s.desc ?? s.description), price: toDinasti(s.price) }))
   const utama = svc.filter(s => s.category === 'utama'), tambahan = svc.filter(s => s.category === 'tambahan')
   const { lokasi = {}, kontak = {}, barber = {}, about = {}, video = {} } = sections
   return {

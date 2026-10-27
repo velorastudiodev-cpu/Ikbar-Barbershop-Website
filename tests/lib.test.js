@@ -76,7 +76,7 @@ test('CMS rows map onto the site with the same contract the dashboard writes', a
   const site = await loadSiteData(fakeSupabase({
     gallery_items: [{ src: 'https://x.supabase.co/a.jpg', type: 'image', alt: 'Hasil Ikbar Barbershop', category: 'Foto', sort_order: 1 }],
     services: [
-      { name: 'Skin Fade', desc: 'Tajam', price: 'Rp 30.000', category: 'utama' },
+      { name: 'Skin Fade', description: 'Tajam', price: 'Rp 30.000', category: 'utama' }, // the dashboard writes `description`
       { name: 'Perming', desc: 'Ala Korea', price: 'Tanya Ikbar', category: 'tambahan', highlight: true },
     ],
     site_content: [
@@ -91,6 +91,7 @@ test('CMS rows map onto the site with the same contract the dashboard writes', a
   assert.equal(site.hours[0].jam, '09:00 – 22:00')
   assert.equal(site.gallery[0].alt, 'Hasil Dinasti Barbershop')
   assert.equal(site.servicesUtama[0].price, 'Rp 30.000')
+  assert.equal(site.servicesUtama[0].desc, 'Tajam')
   assert.equal(site.servicesTambahan[0].price, 'Tanya Dinasti')
   // The old white-background crest photo is replaced by the dark-theme crest.
   assert.equal(site.aboutImage, null)
