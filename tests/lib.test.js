@@ -112,3 +112,25 @@ test('CMS rows with the old name or placeholders are ignored', async () => {
   assert.equal(site.mapsUrl, FALLBACK.mapsUrl)
   assert.equal(site.gallery, FALLBACK.gallery)
 })
+
+test('any Maps link from the CMS becomes an embeddable URL', async () => {
+  const { mapLinks } = await import('../src/lib/maps.js')
+  const addr = 'Jl. Raya Luragung, Kuningan'
+  // Place page (refuses iframes) → query embed, place opens in a tab.
+  const place = mapLinks('https://www.google.com/maps/place/Dinasti+Barbershop/@-6.98,108.61,17z', addr)
+  assert.match(place.embed, /^https:\/\/www\.google\.com\/maps\?q=Dinasti%20Barbershop&.*output=embed$/)
+  // Short share link → embed from the address, the share link itself for "open".
+  const share = mapLinks('https://maps.app.goo.gl/AbC123', addr)
+  assert.match(share.embed, /output=embed$/)
+  assert.ok(share.embed.includes(encodeURIComponent(addr)))
+  assert.equal(share.open, 'https://maps.app.goo.gl/AbC123')
+  // maps.google.com (blocked by the old CSP) is normalised to www.google.com.
+  assert.ok(mapLinks('https://maps.google.com/?q=XJPF%2B78W', addr).embed.startsWith('https://www.google.com/maps?q=XJPF%2B78W'))
+  // Official embed codes are kept.
+  assert.equal(mapLinks('https://www.google.com/maps/embed?pb=!1m18', addr).embed, 'https://www.google.com/maps/embed?pb=!1m18')
+  // A pasted <iframe> embed snippet is unwrapped.
+  assert.equal(mapLinks('<iframe src="https://www.google.com/maps/embed?pb=!1m18&amp;x=1" width="600"></iframe>', addr).embed, 'https://www.google.com/maps/embed?pb=!1m18&x=1')
+  // Garbage or empty input still yields a working map.
+  for (const bad of [null, '', 'not a url', 'https://example.com/x']) assert.match(mapLinks(bad, addr).embed, /output=embed$/)
+  assert.match(mapLinks(null, addr).directions, /destination=-6\.9825%2C108\.6185$/)
+})

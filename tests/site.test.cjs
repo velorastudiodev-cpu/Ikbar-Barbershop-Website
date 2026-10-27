@@ -45,10 +45,15 @@ const fail = (m) => { throw new Error(m) }
   await page.keyboard.press('Escape')
   await page.locator('dialog.lightbox').waitFor({ state: 'hidden', timeout: 3000 }).catch(() => fail('Lightbox did not close'))
 
-  // Map loads only on request.
-  if (await page.locator('.map iframe').count()) fail('Map iframe loaded before it was asked for')
-  await page.getByRole('button', { name: 'Tampilkan peta' }).click()
-  await page.locator('.map iframe').waitFor({ timeout: 3000 }).catch(() => fail('Map did not load'))
+  // Map: not loaded up front, loads on approach with an embeddable URL, and the plain links always work.
+  const fresh = await browser.newPage({ viewport: { width: 1280, height: 900 } })
+  await fresh.goto(URL, { waitUntil: 'networkidle' })
+  if (await fresh.locator('.map iframe').count()) fail('Map iframe loaded on first paint')
+  await fresh.close()
+  await page.locator('#lokasi').scrollIntoViewIfNeeded()
+  await page.locator('.map iframe').waitFor({ state: 'attached', timeout: 3000 }).catch(() => fail('Map did not load on approach'))
+  if (!/^https:\/\/www\.google\.com\/maps(\/embed)?\?.*(output=embed|pb=)/.test(await page.getAttribute('.map iframe', 'src'))) fail('Map iframe is not an embed URL')
+  if (!(await page.getAttribute('.map-actions a', 'href')).startsWith('https://www.google.com/maps/dir/')) fail('Directions link missing')
 
   // Floating WhatsApp stays out of the hero.
   await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' })); await page.waitForTimeout(300)
