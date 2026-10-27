@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { waLink, imageProps, posterFor } from '../data.js'
 import { useSite } from '../site.js'
-import { Icon, Mark, OpenStatus } from './ui.jsx'
+import { Icon, OpenStatus } from './ui.jsx'
 
 export const NAV = [
   ['tentang', 'Tentang'], ['barber', 'Barber'], ['galeri', 'Galeri'], ['layanan', 'Layanan'], ['booking', 'Booking'], ['lokasi', 'Lokasi'],
@@ -31,8 +31,8 @@ export function Header() {
     <header className={`nav ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''}`}>
       <div className="nav-inner shell">
         <a className="brand" href="#top" onClick={() => setOpen(false)}>
-          <Mark size={30} />
-          <span><b>Dinasti</b><small>Barbershop</small></span>
+          {/* Client's own logo file, shown as-is. */}
+          <img className="brand-logo" src="/assets/logo-dinasti.png" alt="Dinasti Barbershop" width="290" height="233" />
         </a>
         <nav id="nav-links" className="nav-links" aria-label="Navigasi utama">
           {NAV.map(([id, label]) => (

@@ -3,7 +3,7 @@ import { waLink } from '../data.js'
 import { useSite } from '../site.js'
 import { DAY_NAMES, parseDays } from '../lib/hours.js'
 import { mapLinks } from '../lib/maps.js'
-import { Icon, Mark, OpenStatus, SectionHead, useNow } from './ui.jsx'
+import { Icon, OpenStatus, SectionHead, useNow } from './ui.jsx'
 import { NAV } from './Top.jsx'
 
 const prettyWa = (n) => '+' + n.replace(/^62/, '62 ').replace(/(\d{3})(\d{4})(\d{3,5})$/, '$1-$2-$3')
@@ -100,7 +100,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="shell footer-inner">
-        <a className="brand" href="#top"><Mark size={28} /><span><b>Dinasti</b><small>Barbershop</small></span></a>
+        <a className="brand" href="#top"><img className="brand-logo" src="/assets/logo-dinasti.png" alt="Dinasti Barbershop" width="290" height="233" /></a>
         <nav aria-label="Navigasi footer"><ul>{NAV.map(([id, label]) => <li key={id}><a href={`#${id}`}>{label}</a></li>)}</ul></nav>
         <p>© 2026 Dinasti Barbershop · Luragung, Kuningan<br /><small>Made with care by Velora Studio</small></p>
       </div>

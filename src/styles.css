@@ -71,8 +71,9 @@ h2 em, h1 em { font-style: italic; color: var(--brass-l); }
 .nav.is-scrolled { background: rgba(13, 13, 14, .86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--line); }
 .nav-inner { display: flex; align-items: center; gap: 22px; height: 72px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--bone); text-decoration: none; }
-.brand b { display: block; font-family: var(--display); font-size: 21px; font-weight: 600; line-height: 1; letter-spacing: .14em; text-transform: uppercase; }
-.brand small { display: block; margin-top: 3px; color: var(--brass); font-size: 9px; font-weight: 700; letter-spacing: .38em; text-transform: uppercase; }
+.brand-logo { display: block; width: 112px; height: 64px; object-fit: contain; }
+.footer .brand-logo { width: 140px; height: 80px; }
+@media (max-width: 860px) { .nav .brand-logo { width: 96px; height: 54px; } }
 .nav-links { display: flex; gap: 2px; margin-left: auto; }
 .nav-links a:not(.btn) { padding: 8px 12px; color: var(--muted); font-size: 14px; font-weight: 600; text-decoration: none; transition: color .2s; }
 .nav-links a:not(.btn):hover, .nav-links a[aria-current] { color: var(--bone); }

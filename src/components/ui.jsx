@@ -29,18 +29,6 @@ export function Icon({ name, size = 20, className = '' }) {
   )
 }
 
-/** The "D" barber-pole mark from the brand logo. */
-export function Mark({ size = 34 }) {
-  return (
-    <svg width={size} height={size} viewBox="70 14 186 204" aria-hidden="true" className="mark">
-      <path fill="currentColor" d="M86 28h73c49 0 89 39 89 88s-40 88-89 88H86v-23h73c36 0 65-29 65-65s-29-65-65-65H86z" />
-      <path fill="currentColor" d="M86 28h25v176H86z" />
-      <path fill="var(--ink)" d="M111 53h23l-23 20zm0 43h23l-23 20zm0 43h23l-23 20z" />
-      <path fill="currentColor" d="M78 18h43v10H78zm0 186h43v10H78z" />
-    </svg>
-  )
-}
-
 /** Adds `.in` to [data-reveal] elements as they scroll into view. Mounted once. */
 export function useRevealObserver() {
   useEffect(() => {
